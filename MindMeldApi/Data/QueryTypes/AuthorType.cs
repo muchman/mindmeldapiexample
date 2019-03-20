@@ -9,13 +9,13 @@ namespace MindMeldApi.Data.QueryTypes
 {
     public class AuthorType : ObjectGraphType<Author>
     {
-        public AuthorType()
+        public AuthorType(MindMeldRepository repository)
         {
             Field(x => x.Id).Description("The Id of the person.");
             Field(x => x.Name).Description("The name of the person.");
             Field(x => x.Birthdate).Description("The birthdate of the person.");
             Field<ListGraphType<BookType>>("books",
-                resolve: context => new Book[] { });
+                resolve: context => repository.GetBooksByAuthor(context.Source));
         }
     }
 }

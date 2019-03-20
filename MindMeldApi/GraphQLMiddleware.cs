@@ -3,8 +3,6 @@ using GraphQL.Http;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using MindMeldApi.Data;
-using MindMeldApi.Data.Queries;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,41 +14,50 @@ namespace MindMeldApi
     public class GraphQLMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly MindMeldRepository _repository;
 
-        public GraphQLMiddleware(RequestDelegate next, MindMeldRepository repository)
+        public GraphQLMiddleware(RequestDelegate next)
         {
             _next = next;
-            _repository = repository;
         }
 
-        public async Task Invoke(HttpContext httpContext)
+        public async Task Invoke(HttpContext context, ISchema schema, IDocumentExecuter executer)
         {
-            var sent = false;
-            if (httpContext.Request.Path.StartsWithSegments("/graph"))
+            if (!IsGraphQLRequest(context))
             {
-                using (var sr = new StreamReader(httpContext.Request.Body))
+                await _next(context);
+                return;
+            }
+
+            await ExecuteAsync(context, schema, executer);
+        }
+
+        private bool IsGraphQLRequest(HttpContext context)
+        {
+            return context.Request.Path.StartsWithSegments("/graphql");
+        }
+
+        private async Task ExecuteAsync(HttpContext context, ISchema schema, IDocumentExecuter executer)
+        {
+            string query = null;
+
+            if (context.Request.Method == "GET")
+            {
+                query = context.Request.Query["query"];
+            }
+            else if (context.Request.Method == "POST")
+            {
+                using (var sr = new StreamReader(context.Request.Body))
                 {
-                    var query = await sr.ReadToEndAsync();
-                    if (!String.IsNullOrWhiteSpace(query))
-                    {
-                        var schema = new Schema { Query = new BookQuery(_repository) };
-                        var result = await new DocumentExecuter()
-                          .ExecuteAsync(options =>
-                          {
-                              options.Schema = schema;
-                              options.Query = query;
-                          }).ConfigureAwait(false);
-                        CheckForErrors(result);
-                        await WriteResult(httpContext, result);
-                        sent = true;
-                    }
+                    query = await sr.ReadToEndAsync();
                 }
             }
-            if (!sent)
+            var result = await executer.ExecuteAsync(_ =>
             {
-                await _next(httpContext);
-            }
+                _.Schema = schema;
+                _.Query = query;
+            });
+
+            await WriteResult(context, result);
         }
 
         private async Task WriteResult(HttpContext httpContext, ExecutionResult result)
@@ -60,27 +67,9 @@ namespace MindMeldApi
             httpContext.Response.ContentType = "application/json";
             await httpContext.Response.WriteAsync(json);
         }
-
-        private void CheckForErrors(ExecutionResult result)
-        {
-            if (result.Errors?.Count > 0)
-            {
-                var errors = new List<Exception>();
-                foreach (var error in result.Errors)
-                {
-                    var ex = new Exception(error.Message);
-                    if (error.InnerException != null)
-                    {
-                        ex = new Exception(error.Message, error.InnerException);
-                    }
-                    errors.Add(ex);
-                }
-                throw new AggregateException(errors);
-            }
-        }
     }
 
-    public static class GraphQLMiddlewareExtensions
+    public static class GraphQlMiddlewareExtensions
     {
         public static IApplicationBuilder UseGraphQL(this IApplicationBuilder builder)
         {

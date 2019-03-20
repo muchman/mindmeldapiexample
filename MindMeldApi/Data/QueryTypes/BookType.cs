@@ -9,12 +9,14 @@ namespace MindMeldApi.Data.QueryTypes
 {
     public class BookType : ObjectGraphType<Book>
     {
-        public BookType()
+        public BookType(MindMeldRepository repository)
         {
             Field(x => x.Id).Description("The id of the book.");
             Field(x => x.Title).Description("The title of the book.");
-            Field<AuthorType>("author");
-            Field<PublisherType>("publisher");
+            Field<AuthorType>("author",
+                resolve: context => repository.GetById<Author>(context.Source.AuthorId));
+            Field<PublisherType>("publisher",
+                resolve: context => repository.GetById<Publisher>(context.Source.PublisherId));
 
         }
     }
