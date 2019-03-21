@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  mindmeldapi:
+    image: ${DOCKER_REGISTRY-}mindmeldapi
+    build:
+      context: .
+      dockerfile: MindMeldApi/Dockerfile

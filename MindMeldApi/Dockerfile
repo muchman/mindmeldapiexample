@@ -5,14 +5,14 @@ EXPOSE 443
 
 FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /src
-COPY ["MindMeldApi/MindMeldApi.csproj", "MindMeldApi/"]
-RUN dotnet restore "MindMeldApi/MindMeldApi.csproj"
+COPY MindMeldApi/MindMeldApi.csproj MindMeldApi/
+RUN dotnet restore MindMeldApi/MindMeldApi.csproj
 COPY . .
-WORKDIR "/src/MindMeldApi"
-RUN dotnet build "MindMeldApi.csproj" -c Release -o /app
+WORKDIR /src/MindMeldApi
+RUN dotnet build MindMeldApi.csproj -c Release -o /app
 
 FROM build AS publish
-RUN dotnet publish "MindMeldApi.csproj" -c Release -o /app
+RUN dotnet publish MindMeldApi.csproj -c Release -o /app
 
 FROM base AS final
 WORKDIR /app

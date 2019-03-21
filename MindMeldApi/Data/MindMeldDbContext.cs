@@ -13,7 +13,7 @@ namespace MindMeldApi.Data
         public virtual DbSet<Book> Books { get; set; }
         public virtual DbSet<Author> Authors { get; set; }
         public virtual DbSet<Publisher> Publishers { get; set; }
-        public MindMeldDbContext(DbContextOptions options) : base(options)
+        public MindMeldDbContext(DbContextOptions<MindMeldDbContext> options) : base(options)
         {
         }
     }

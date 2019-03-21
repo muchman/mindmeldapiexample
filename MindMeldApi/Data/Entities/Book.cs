@@ -1,20 +1,23 @@
-﻿using System;
+﻿using JsonApiDotNetCore.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace MindMeldApi.Data.Entities
 {
-    public class Book
+    public class Book : Identifiable
     {
-        public int Id { get; set; }
+        [Attr("title")]
         public string Title { get; set; }
         public int AuthorId { get; set; }
         public int PublisherId { get; set; }
+        [Attr("publishdate")]
         public DateTime PublishDate { get; set; }
 
+        [HasOne("author")]
         public Author Author { get; set; }
-
+        [HasOne("publisher")]
         public Publisher Publisher { get; set; }
 
     }

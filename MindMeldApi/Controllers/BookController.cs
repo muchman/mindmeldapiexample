@@ -21,16 +21,16 @@ namespace MindMeldApi.Controllers
 
         // GET api/values
         [HttpGet]
-        public ControllerResult<IEnumerable<Book>> Get()
+        public JsonResult Get()
         {
-            return new ControllerResult<IEnumerable<Book>>(_repository.GetAll<Book>());
+            return new JsonResult(new ControllerResult<IEnumerable<Book>>(_repository.GetAll<Book>()));
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ControllerResult<Book> Get(int id)
+        public JsonResult Get(int id)
         {
-            return new ControllerResult<Book>(_repository.GetById<Book>(id));
+            return new JsonResult(new ControllerResult<Book>(_repository.GetById<Book>(id)));
         }
 
         //// POST api/values
