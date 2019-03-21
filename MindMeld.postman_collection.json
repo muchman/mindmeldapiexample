@@ -1,0 +1,193 @@
+{
+	"info": {
+		"_postman_id": "cd180ff6-59b2-4895-ba70-157a0897eaae",
+		"name": "MindMeld",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "JsonApi",
+			"item": [
+				{
+					"name": "JsonApiCreate",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data\": {\n        \"type\": \"books\",\n        \"attributes\": {\n            \"title\": \"I wrote a new book3\"\n        },\n        \"relationships\": {\n            \"author\": {\n                \"data\": {\n                    \"type\": \"authors\",\n                    \"id\": \"1\"\n            \t}\n    \t\t}\n        }\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44323/jsonapi/books",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44323",
+							"path": [
+								"jsonapi",
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "JsonApiDelete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:44323/jsonapi/books/8",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44323",
+							"path": [
+								"jsonapi",
+								"books",
+								"8"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rest",
+			"item": [
+				{
+					"name": "RestCreate",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"title\": \"I wrote a Restful book!\",\r\n      \"authorId\": 2,\r\n      \"publisherId\": 3,\r\n      \"publishDate\": \"2018-03-03T00:00:00\",\r\n      \"id\": 10,\r\n    }"
+						},
+						"url": {
+							"raw": "https://localhost:44323/rest/book",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44323",
+							"path": [
+								"rest",
+								"book"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RestDelete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:44323/rest/book/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44323",
+							"path": [
+								"rest",
+								"book",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GraphQL",
+			"item": [
+				{
+					"name": "GraphQLCreate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "mutation {\n\tcreatebook(book: {id: 26, title: \"GraphQL Book FTW!\"})\n\t{\n\tid,\n\ttitle\n\t}\n}\n"
+						},
+						"url": {
+							"raw": "https://localhost:44323/graphql",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44323",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GraphQLDelete",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "mutation {\n\tdeletebook(id: 26)\n\t{\n\tid\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44323/graphql",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44323",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -14,6 +14,7 @@ namespace MindMeldApi.Data
             : base(resolver)
         {
             Query = resolver.Resolve<BookQuery>();
+            Mutation = resolver.Resolve<BooksMutation>();
         }
     }
 }

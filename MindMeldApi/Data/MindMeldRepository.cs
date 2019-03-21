@@ -35,5 +35,25 @@ namespace MindMeldApi.Data
         {
             return _context.Set<T>().ToList();
         }
+
+        public T Add<T>(T item) where T : class
+        {
+            _context.Set<T>().Add(item);
+            _context.SaveChanges();
+            return item;
+        }
+
+        public T Delete<T>(object id) where T : class
+        {
+            var set = _context.Set<T>();
+            var item = set.Find(id);
+            if (item != null)
+            {
+                set.Remove(item);
+                _context.SaveChanges();
+            }
+
+            return item;
+        }
     }
 }

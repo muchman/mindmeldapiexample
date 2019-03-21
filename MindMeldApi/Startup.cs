@@ -49,7 +49,9 @@ namespace MindMeldApi
             services.AddScoped<IDocumentWriter, DocumentWriter>();
 
             services.AddScoped<BookQuery>();
+            services.AddScoped<BooksMutation>();
             services.AddScoped<BookType>();
+            services.AddScoped<BookInputType>();
             services.AddScoped<AuthorType>();
             services.AddScoped<PublisherType>();
 
