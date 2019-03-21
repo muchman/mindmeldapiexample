@@ -20,6 +20,9 @@ namespace MindMeldApi.Controllers
             var rest4 = baseUrl + "/rest/author/1";
             var rest5 = baseUrl + "/rest/publisher";
             var rest6 = baseUrl + "/rest/publisher/1";
+            var rest7 = baseUrl + "/rest/book/1/author";
+            var rest8 = baseUrl + "/rest/book/1/publisher";
+            var rest9 = baseUrl + "/rest/book/1/author/publisher";
 
             var json1 = baseUrl + "/jsonapi/books";
             var json2 = baseUrl + "/jsonapi/books/1";
@@ -59,6 +62,9 @@ namespace MindMeldApi.Controllers
 <li><a href={rest4}>{Clean(rest4)}</a></li>
 <li><a href={rest5}>{Clean(rest5)}</a></li>
 <li><a href={rest6}>{Clean(rest6)}</a></li>
+<li><a href={rest7}>{Clean(rest7)}</a></li>
+<li><a href={rest8}>{Clean(rest8)}</a></li>
+<li><a href={rest9}>{Clean(rest9)}</a></li>
 </ul>                           
 
 <h2>JSON:API</h2>

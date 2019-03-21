@@ -40,6 +40,8 @@ namespace MindMeldApi
             var mvcBuilder = services.AddMvcCore().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddJsonFormatters(options =>
             {
                 options.Formatting = Formatting.Indented;
+                options.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                options.NullValueHandling = NullValueHandling.Ignore;
             });
 
             services.AddScoped<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));

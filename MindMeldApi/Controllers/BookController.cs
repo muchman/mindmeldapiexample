@@ -33,6 +33,31 @@ namespace MindMeldApi.Controllers
             return new JsonResult(new ControllerResult<Book>(_repository.GetById<Book>(id)));
         }
 
+        [HttpGet("{id}/Author")]
+        public JsonResult GetWithAuthor(int id)
+        {
+            var book = _repository.GetById<Book>(id);
+            book.Author = _repository.GetById<Author>(book.AuthorId);
+            return new JsonResult(new ControllerResult<Book>(book));
+        }
+
+        [HttpGet("{id}/Publisher")]
+        public JsonResult GetWithPublisher(int id)
+        {
+            var book = _repository.GetById<Book>(id);
+            book.Publisher = _repository.GetById<Publisher>(book.PublisherId);
+            return new JsonResult(new ControllerResult<Book>(book));
+        }
+
+        [HttpGet("{id}/Author/Publisher")]
+        public JsonResult GetWithAuthorAndPublisher(int id)
+        {
+            var book = _repository.GetById<Book>(id);
+            book.Author = _repository.GetById<Author>(book.AuthorId);
+            book.Publisher = _repository.GetById<Publisher>(book.PublisherId);
+            return new JsonResult(new ControllerResult<Book>(book));
+        }
+
         //// POST api/values
         //[HttpPost]
         //public void Post([FromBody] string value)
